@@ -1,31 +1,22 @@
 import random
+groupsize = 4
+sumsknown = []
+for i in range(groupsize):
+    sumsknown.append([])
 def ismaj (a, size, start):
     ctr = 0
     for b in range (size):
         ctr += a[start+b][0]
-    if ctr == (size - 3):
-        sum = 0
-        for b in range(size):
+    for i in range(size):
+        if ctr == (size - i):
+          #print(i)
+          sum = 0
+          for b in range(size):
             if a[start + b][0] == 0:
                 sum += a[start + b][1]
-
-            if sum not in sum3known:
-                sum3known.append(sum)
-    if ctr == (size - 2):
-        sum = 0
-        for b in range(size):
-            if a[start + b][0] == 0:
-                sum += a[start + b][1]
-
-            if sum not in sum2known:
-                sum2known.append(sum)
-    if ctr == (size - 1):
-        for b in range(size):
-            z = a[start + b][1]
-            if z not in sum1known:
-                sum1known.append(z)
-
-
+          if sum not in sumsknown[i-1]:
+              #print("new sum " + str(sum))
+              sumsknown[i-1].append(sum)
     if ctr > size/2:
         return 1
     else:
@@ -33,19 +24,29 @@ def ismaj (a, size, start):
 secretsize = 900
 secretnum = 800
 numtests = 150
+def flatten_list(ls, flattened_list):
+    for elem in ls:
+        if not isinstance(elem, list): 
+            flattened_list.append(elem)
+        else:
+            flatten_list(elem, flattened_list)
+    return flattened_list
+
+def recursive_len(item):
+
+    return len(flatten_list(item, []))
 for l in range(numtests):
     advpower = random.uniform(0.05, 0.5)
-    groupsize = 4
+    
     numtildone = 0
     numtrials = 20
     for j in range(numtrials):
         x = []
-
+        
         secby = 0
         advknown = []
-        sum2known = []
-        sum3known = []
-        sum1known = []
+        for i in range(groupsize):
+            sumsknown[i]=[]
         for y in range(secretsize):
             if random.uniform(0, 1) < advpower:
                 r = 1
@@ -53,17 +54,19 @@ for l in range(numtests):
             else:
                 r = 0
             x.append([r, y])
-        while ((len(sum2known) +len(sum3known) +len(sum1known) + len(advknown)) < secretsize) and (len(sum1known) + len(advknown) < secretnum):
+        #print(sumsknown)
+        while ((recursive_len(sumsknown) + len(advknown)) < secretsize) and (len(sumsknown[0]) + len(advknown) < secretnum):
             random.shuffle(x)
             advgroups =0
-            #print ("new trial")
+            #sprint ("new trial")
             numtildone += 1
 
 
             for b in range(int(len(x)/groupsize)):
                 advgroups += ismaj (x, groupsize, groupsize*b)
         #print(len(advknown))
-        #print(len(sum1known))
+        #print(len(sumsknown[0]))
+        #print(len(sumsknown[1]))
         #print(len(sum2known))
         #print(len(sum3known))
 
