@@ -1,5 +1,5 @@
 import random
-groupsize = 4
+groupsize = 10
 sumsknown = []
 for i in range(groupsize):
     sumsknown.append([])
@@ -21,9 +21,8 @@ def ismaj (a, size, start):
         return 1
     else:
         return 0
-secretsize = 900
-secretnum = 800
-numtests = 150
+
+numtests = 40
 def flatten_list(ls, flattened_list):
     for elem in ls:
         if not isinstance(elem, list): 
@@ -35,8 +34,11 @@ def flatten_list(ls, flattened_list):
 def recursive_len(item):
 
     return len(flatten_list(item, []))
-for l in range(numtests):
-    advpower = random.uniform(0.05, 0.5)
+for i in range(5, numtests):
+    groupsize = i
+    secretsize = 900
+    secretnum = 800
+    advpower = 0.3
     
     numtildone = 0
     numtrials = 20
@@ -45,8 +47,10 @@ for l in range(numtests):
         
         secby = 0
         advknown = []
-        for i in range(groupsize):
-            sumsknown[i]=[]
+        for k in range(len(sumsknown), groupsize):
+            sumsknown.append([])
+        for k in range(groupsize):
+            sumsknown[k]=[]
         for y in range(secretsize):
             if random.uniform(0, 1) < advpower:
                 r = 1
@@ -71,4 +75,4 @@ for l in range(numtests):
         #print(len(sum3known))
 
 
-    print(str(advpower) + ", " + str(numtildone/numtrials))
+    print(str(groupsize) + ", " + str(numtildone/numtrials))
