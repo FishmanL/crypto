@@ -35,11 +35,11 @@ def recursive_len(item):
 
     return len(flatten_list(item, []))
 for i in range(5, numtests):
-    groupsize = i
+    groupsize = i #comment out to switch to advpower testing
     secretsize = 900
     secretnum = 800
     advpower = 0.3
-    
+    #advpower = random.uniform(0.2, 0.8) for advpower testing
     numtildone = 0
     numtrials = 20
     for j in range(numtrials):
